@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Link from "next/link";
 import { Oswald } from "next/font/google";
 import { WorkContext } from "@/context/WorklistContext";
 import PlanWorkoutCard from "@/components/shared/PlanWorkoutCard";
+import PlanStats from "@/components/myplanCount/PlanStats";
 
 const oswald = Oswald({
     subsets: ["latin"],
@@ -14,10 +15,46 @@ const oswald = Oswald({
 const Page = () => {
     const { addToPlan, saveForLater } = useContext(WorkContext);
     const [sortOption, setSortOption] = useState("duration");
+    const [activeTab, setActiveTab] = useState("today");
+
+    const sortWorkOuts = (workouts => {
+        const sortedWorkouts = [...workouts];
+        if (sortOption === "duration") {
+            sortedWorkouts.sort((a, b) => a.duration - b.duration);
+        } else if (sortOption === "calories") {
+            sortedWorkouts.sort((a, b) => a.caloriesBurned - b.caloriesBurned);
+        } else if (sortOption === "rating") {
+            sortedWorkouts.sort((a, b) => b.rating - a.rating);
+        }
+        return sortedWorkouts;
+    })
+
+    const sortedAddToPlan = sortWorkOuts(addToPlan)
+
+    const sortedSavedLater = sortWorkOuts(saveForLater)
+    const activeWorkouts =
+        activeTab === "today" ? addToPlan : saveForLater;
+
+    const totalExercises = activeWorkouts.length;
+
+    const totalMinutes = activeWorkouts.reduce(
+        (total, workout) => total + workout.duration,
+        0
+    );
+
+    const totalCalories = activeWorkouts.reduce(
+        (total, workout) => total + workout.caloriesBurned,
+        0
+    );
 
     return (
         <div className="min-h-screen bg-black text-white">
             <div className="group/root container mx-auto px-4 py-8 md:py-12">
+                <PlanStats
+                    exercises={totalExercises}
+                    minutes={totalMinutes}
+                    calories={totalCalories}
+                />
 
                 {/* Tab radios (CSS only) */}
                 <input
@@ -27,6 +64,7 @@ const Page = () => {
                     className="sr-only"
                     aria-label="Today's Plan"
                     defaultChecked
+                    onChange={() => setActiveTab("today")}
                 />
                 <input
                     id="tab-saved"
@@ -34,6 +72,7 @@ const Page = () => {
                     name="my_tabs"
                     className="sr-only"
                     aria-label="Saved Workouts"
+                    onChange={() => setActiveTab("saved")}
                 />
 
                 {/* Tabs (left) + Sort (right) */}
@@ -61,7 +100,8 @@ const Page = () => {
 
                         <div className="relative">
                             <select
-                                defaultValue="Pick a Runtime"
+                                value={sortOption}
+                                onChange={(e) => setSortOption(e.target.value)}
                                 className="cursor-pointer appearance-none rounded-lg border border-white/10 bg-[#11131a] py-2 pl-4 pr-10 text-xs font-medium text-white transition-colors duration-300 hover:border-lime-400/50 focus:border-lime-400 focus:outline-none sm:text-sm"
                             >
                                 <option disabled={true} className="bg-[#11131a]">Pick a Runtime</option>
@@ -86,9 +126,9 @@ const Page = () => {
 
                 {/* Today's Plan */}
                 <div className="mt-6 hidden group-has-[#tab-today:checked]/root:block">
-                    {addToPlan.length > 0 ? (
+                    {sortedAddToPlan.length > 0 ? (
                         <div className="space-y-5">
-                            {addToPlan.map((item) => (
+                            {sortedAddToPlan.map((item) => (
                                 <PlanWorkoutCard
                                     key={item.id}
                                     work={item}
@@ -107,10 +147,10 @@ const Page = () => {
                                 </p>
 
                                 <Link
-                                    href="/workout"
+                                    href="/"
                                     className="mt-6 inline-block rounded-full bg-lime-400 px-7 py-2.5 text-sm font-bold text-black shadow-[0_8px_30px_-8px_rgba(163,230,53,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-lime-300 hover:shadow-[0_12px_36px_-6px_rgba(163,230,53,0.8)]"
                                 >
-                                    Go to workouts
+                                    Go to the Page
                                 </Link>
                             </div>
                         </div>
@@ -119,9 +159,9 @@ const Page = () => {
 
                 {/* Saved */}
                 <div className="mt-6 hidden group-has-[#tab-saved:checked]/root:block">
-                    {saveForLater.length > 0 ? (
+                    {sortedSavedLater.length > 0 ? (
                         <div className="space-y-5">
-                            {saveForLater.map((item) => (
+                            {sortedSavedLater.map((item) => (
                                 <PlanWorkoutCard
                                     key={item.id}
                                     work={item}

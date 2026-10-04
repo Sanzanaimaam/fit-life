@@ -12,7 +12,7 @@ const Navbar = () => {
     const links = (
         <>
             <li>
-                <Link href="/">Workouts</Link>
+                <Link href="/viewAllCard">Workouts</Link>
             </li>
 
             <li>
