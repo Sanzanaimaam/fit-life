@@ -1,6 +1,11 @@
-import React from 'react';
+"use client";
 
-const page = () => {
+import React, { useContext } from "react";
+import { WorkContext } from "@/context/WorklistContext";
+
+const Page = () => {
+    const { addToPlan } = useContext(WorkContext);
+
     return (
         <div>
             
@@ -8,4 +13,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;
