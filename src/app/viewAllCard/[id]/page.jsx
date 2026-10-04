@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import AddToPlan from '@/components/workDetailsButton/AddToPlan';
+import SaveForLater from '@/components/workDetailsButton/SaveForLater';
 
 const getSpecificPage = async () => {
     const res = await fetch('https://api.abcz.workers.dev/api/fitlog');
@@ -195,15 +196,7 @@ const page = async({params}) => {
                         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
                             <AddToPlan data={specificWorkout}/>
 
-                            <button
-                                type="button"
-                                className="group inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-sm font-extrabold uppercase tracking-wide text-white backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-lime-400 hover:bg-lime-400/10 hover:text-lime-300 active:translate-y-0 active:scale-[0.98]"
-                            >
-                                <svg className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M6 3h12a1 1 0 011 1v17l-7-4-7 4V4a1 1 0 011-1z" />
-                                </svg>
-                                Save for Later
-                            </button>
+                            <SaveForLater data={specificWorkout}/>
                         </div>
 
                     </div>

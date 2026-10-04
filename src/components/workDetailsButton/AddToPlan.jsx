@@ -3,6 +3,7 @@
 
 import { WorkContext } from '@/context/WorklistContext';
 import React, { useContext } from 'react';
+import { toast } from 'react-toastify';
 
 
 
@@ -14,7 +15,7 @@ const AddToPlan = ({data}) => {
 
     const handleAddButton = () => {
     console.log("button clicked");
-    alert("Added to Today's Plan");
+    toast.success("Added to Today's Plan");
 
     setAddToPlan([...addToPlan, data]);
 };

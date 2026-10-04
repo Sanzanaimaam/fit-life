@@ -1,14 +1,18 @@
+"use client";
+
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import logo from "@/assets/logo.png";
 import Image from "next/image";
+import { WorkContext } from "@/context/WorklistContext";
 
 const Navbar = () => {
+    const { addToPlan, saveForLater } = useContext(WorkContext);
 
     const links = (
         <>
             <li>
-                <Link href="">Workouts</Link>
+                <Link href="/">Workouts</Link>
             </li>
 
             <li>
@@ -18,10 +22,8 @@ const Navbar = () => {
     );
 
     return (
-        <nav className="bg-black border-b border-white/10 text-white">
-
+        <nav className="border-b border-white/10 bg-black text-white">
             <div className="container mx-auto px-4">
-
                 <div className="navbar">
 
                     {/* Left */}
@@ -52,19 +54,21 @@ const Navbar = () => {
 
                             <ul
                                 tabIndex={-1}
-                                className="menu menu-sm dropdown-content bg-black rounded-box z-1 mt-3 w-52 p-2 shadow"
+                                className="menu menu-sm dropdown-content z-1 mt-3 w-52 rounded-box bg-black p-2 shadow"
                             >
                                 {links}
 
                                 <li>
                                     <Link href="/myplan?tab=today">
-                                        Plan <span>0</span>
+                                        Plan
+                                        <span>{addToPlan.length}</span>
                                     </Link>
                                 </li>
 
                                 <li>
                                     <Link href="/myplan?tab=saved">
-                                        Saved <span>0</span>
+                                        Saved
+                                        <span>{saveForLater.length}</span>
                                     </Link>
                                 </li>
                             </ul>
@@ -82,7 +86,6 @@ const Navbar = () => {
                                 FIT<span className="text-lime-400">life</span>
                             </span>
                         </Link>
-
                     </div>
 
                     {/* Center */}
@@ -93,14 +96,15 @@ const Navbar = () => {
                     </div>
 
                     {/* Right */}
-                    <div className="navbar-end gap-2 hidden md:flex">
-
+                    <div className="navbar-end hidden gap-2 md:flex">
                         <Link
                             href="/myplan?tab=today"
                             className="btn rounded-full"
                         >
                             Plan
-                            <span className="badge">0</span>
+                            <span className="badge">
+                                {addToPlan.length}
+                            </span>
                         </Link>
 
                         <Link
@@ -108,15 +112,14 @@ const Navbar = () => {
                             className="btn rounded-full"
                         >
                             Saved
-                            <span className="badge">0</span>
+                            <span className="badge">
+                                {saveForLater.length}
+                            </span>
                         </Link>
-
                     </div>
 
                 </div>
-
             </div>
-
         </nav>
     );
 };
