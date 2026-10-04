@@ -1,6 +1,5 @@
 <div align="center">
 
-<img src="./docs/banner.svg" alt="FITlife - Workout & Fitness Planner" width="100%" />
 
 <br />
 <br />
