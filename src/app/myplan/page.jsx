@@ -17,12 +17,16 @@ const Page = () => {
     const [sortOption, setSortOption] = useState("duration");
     const [activeTab, setActiveTab] = useState("today");
 
+
     const sortWorkOuts = (workouts => {
         const sortedWorkouts = [...workouts];
+        console.log("Duration:", workouts.map((item) => item.duration));
+        console.log("Calories:", workouts.map((item) => item.caloriesBurned));
+
         if (sortOption === "duration") {
-            sortedWorkouts.sort((a, b) => a.duration - b.duration);
+            sortedWorkouts.sort((a, b) => b.duration - a.duration);
         } else if (sortOption === "calories") {
-            sortedWorkouts.sort((a, b) => a.caloriesBurned - b.caloriesBurned);
+            sortedWorkouts.sort((a, b) => b.caloriesBurned - a.caloriesBurned);
         } else if (sortOption === "rating") {
             sortedWorkouts.sort((a, b) => b.rating - a.rating);
         }
@@ -132,6 +136,7 @@ const Page = () => {
                                 <PlanWorkoutCard
                                     key={item.id}
                                     work={item}
+                                    type="today"
                                 />
                             ))}
                         </div>
@@ -165,6 +170,7 @@ const Page = () => {
                                 <PlanWorkoutCard
                                     key={item.id}
                                     work={item}
+                                    type="saved"
                                 />
                             ))}
                         </div>
@@ -180,7 +186,7 @@ const Page = () => {
                                 </p>
 
                                 <Link
-                                    href="/workout"
+                                    href="/"
                                     className="mt-6 inline-block rounded-full bg-lime-400 px-7 py-2.5 text-sm font-bold text-black shadow-[0_8px_30px_-8px_rgba(163,230,53,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-lime-300 hover:shadow-[0_12px_36px_-6px_rgba(163,230,53,0.8)]"
                                 >
                                     Go to workouts

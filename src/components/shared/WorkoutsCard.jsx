@@ -17,87 +17,59 @@ const WorkoutsCard = ({ work }) => {
     return (
         <Link
             href={`/viewAllCard/${id}`}
-            className="group block cursor-pointer overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
+            className="group block cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-[#11131a] shadow-lg shadow-black/40 transition-all duration-300 hover:-translate-y-1 hover:border-lime-400/40 hover:shadow-[0_16px_40px_-18px_rgba(163,230,53,0.35)]"
         >
             {/* Image */}
-            <div className="relative h-64 overflow-hidden">
+            <div className="relative h-44 overflow-hidden">
                 <Image
                     src={image}
                     width={300}
                     height={300}
                     alt={name}
-                    className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+                    className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#11131a] via-transparent to-transparent" />
+
+                {/* Category badge */}
+                <span className="absolute left-3 top-3 max-w-[65%] truncate rounded-full border border-lime-400/30 bg-black/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-lime-400 backdrop-blur-sm">
+                    {muscleGroups}
+                </span>
 
                 {/* Rating */}
-                <div className="absolute right-4 top-4 rounded-full bg-white/95 px-3 py-1.5 text-sm font-bold text-gray-800 shadow-lg">
-                    ⭐ {rating}
-                </div>
-
-                {/* Workout Name */}
-                <div className="absolute bottom-5 left-5 right-5">
-                    <span className="inline-block rounded-full bg-pink-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
-                        {muscleGroups}
-                    </span>
-
-                    <h2 className="mt-2 text-2xl font-extrabold text-white">
-                        {name}
-                    </h2>
-                </div>
+                <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-lime-400 px-2.5 py-1 text-xs font-extrabold text-black">
+                    <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                    {rating}
+                </span>
             </div>
 
             {/* Content */}
-            <div className="p-5">
+            <div className="p-4">
 
-                {/* Calories & Duration */}
-                <div className="grid grid-cols-2 gap-3">
-
-                    <div className="rounded-2xl bg-orange-50 p-4">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-orange-500">
-                            Calories
-                        </p>
-
-                        <p className="mt-1 text-lg font-extrabold text-gray-800">
-                            🔥 {caloriesBurned}
-                            <span className="ml-1 text-xs font-medium text-gray-500">
-                                kcal
-                            </span>
-                        </p>
-                    </div>
-
-                    <div className="rounded-2xl bg-blue-50 p-4">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-blue-500">
-                            Duration
-                        </p>
-
-                        <p className="mt-1 text-lg font-extrabold text-gray-800">
-                            ⏱ {duration}
-                        </p>
-                    </div>
-
-                </div>
+                {/* Name */}
+                <h2 className="truncate text-lg font-bold uppercase tracking-wide text-white transition-colors duration-300 group-hover:text-lime-400">
+                    {name}
+                </h2>
 
                 {/* Equipment */}
-                <div className="mt-4 flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-3">
-                    <span className="text-sm font-medium text-gray-500">
-                        Equipment
-                    </span>
+                <p className="mt-1 truncate text-sm text-white/50">
+                    {equipment}
+                </p>
 
-                    <span className="max-w-[55%] truncate text-sm font-bold text-gray-800">
-                        🏋️ {equipment}
-                    </span>
-                </div>
+                {/* Stats */}
+                <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium text-white/70">
+                    <span>{duration}</span>
+                    <span className="text-white/20">•</span>
+                    <span>{caloriesBurned} kcal</span>
+                </p>
 
                 {/* Bottom */}
-                <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
-                    <span className="text-sm font-semibold text-gray-400">
-                        Ready to train?
-                    </span>
-
-                    <span className="font-bold text-pink-600 transition-transform duration-300 group-hover:translate-x-1">
-                        Explore →
+                <div className="mt-4 flex items-center justify-end border-t border-white/10 pt-3">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-lime-400">
+                        View Details
+                        <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                     </span>
                 </div>
 

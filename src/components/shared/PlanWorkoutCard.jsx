@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Oswald } from "next/font/google";
+import { WorkContext } from "@/context/WorklistContext";
+import { toast } from "react-toastify";
 
 const oswald = Oswald({
     subsets: ["latin"],
     weight: ["500", "600", "700"],
 });
 
-const PlanWorkoutCard = ({ work }) => {
+const PlanWorkoutCard = ({ work, type }) => {
     const {
         id,
         name,
@@ -21,12 +23,73 @@ const PlanWorkoutCard = ({ work }) => {
         difficulty,
     } = work;
 
+    const {
+        addToPlan,
+        setAddToPlan,
+        saveForLater,
+        setSaveForLater,
+        doneWorkouts,
+        setDoneWorkouts
+    } = useContext(WorkContext);
+
+    const isDone = doneWorkouts.includes(id);
+
     return (
         <div className="container mx-auto">
             <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#11131a] shadow-xl shadow-black/40 transition-all duration-500 hover:-translate-y-1 hover:border-lime-400/40 hover:shadow-[0_20px_50px_-20px_rgba(163,230,53,0.35)]">
 
                 {/* Soft top highlight */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+
+                {/* Remove button (UI only) */}
+                <button
+                    type="button"
+                    title="Remove workout"
+                    aria-label="Remove workout"
+
+                    onClick={() => {
+                        if (type === "today") {
+                            setAddToPlan(
+                                addToPlan.filter((item) => item.id !== id)
+                            );
+
+                            setDoneWorkouts(
+                                doneWorkouts.filter((item) => item !== id)
+                            );
+
+                            toast.error("Removed from today's plan", {
+                                toastId: `remove-${id}`,
+                            });
+                        } else {
+                            setSaveForLater(
+                                saveForLater.filter((item) => item.id !== id)
+                            );
+
+                            setDoneWorkouts(
+                                doneWorkouts.filter((item) => item !== id)
+                            );
+
+                            toast.error("Removed from saved workouts", {
+                                toastId: `remove-${id}`,
+                            });
+                        }
+                    }}
+
+                    className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/60 backdrop-blur-sm transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/15 hover:text-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60"
+                >
+                    <svg
+                        className="h-3.5 w-3.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path d="M6 6l12 12M18 6L6 18" />
+                    </svg>
+                </button>
 
                 <div className="flex flex-col md:flex-row">
 
@@ -115,18 +178,59 @@ const PlanWorkoutCard = ({ work }) => {
                         </div>
 
                         {/* Bottom */}
-                        <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-5">
+                        <div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
                             <span className="text-sm text-white/40">
                                 Ready to train?
                             </span>
 
-                            <Link
-                                href={`/viewAllCard/${id}`}
-                                className="group/btn inline-flex items-center gap-2 rounded-full bg-lime-400 px-5 py-2.5 text-sm font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-lime-300 hover:shadow-[0_10px_30px_-8px_rgba(163,230,53,0.7)]"
-                            >
-                                View Details
-                                <span className="transition-transform duration-300 group-hover/btn:translate-x-1">→</span>
-                            </Link>
+                            <div className="flex flex-wrap items-center gap-3">
+                                {/* Mark as Done (UI only) */}
+                                <button
+                                    type="button"
+                                    disabled={isDone}
+                                    onClick={() => {
+                                        console.log("button clicked");
+
+                                        const alreadyDone = doneWorkouts.some(
+                                            (item) => item === id
+                                        );
+                                        console.log("alreadyDone:", alreadyDone);
+                                        console.log("current doneWorkouts:", doneWorkouts);
+                                        console.log("current id:", id);
+
+                                        if (alreadyDone) {
+                                            toast.info("Workout is already marked as done");
+                                            return;
+                                        }
+
+                                        setDoneWorkouts([...doneWorkouts, id]);
+                                        toast.success("Workout marked as done");
+                                    }}
+                                    className="inline-flex items-center gap-2 rounded-full border border-lime-400/30 bg-lime-400/10 px-5 py-2.5 text-sm font-bold text-lime-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-lime-400/60 hover:bg-lime-400/20 hover:shadow-[0_10px_30px_-10px_rgba(163,230,53,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/60"
+                                >
+                                    <svg
+                                        className="h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth="2.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    {isDone ? "Completed" : "Mark as Done"}
+                                </button>
+
+                                <Link
+                                    href={`/viewAllCard/${id}`}
+                                    className="group/btn inline-flex items-center gap-2 rounded-full bg-lime-400 px-5 py-2.5 text-sm font-bold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-lime-300 hover:shadow-[0_10px_30px_-8px_rgba(163,230,53,0.7)]"
+                                >
+                                    View Details
+                                    <span className="transition-transform duration-300 group-hover/btn:translate-x-1">→</span>
+                                </Link>
+                            </div>
                         </div>
 
                     </div>

@@ -10,10 +10,23 @@ const SaveForLater = ({data}) => {
     
         const handleSaveButton = () => {
         console.log("button clicked");
-        toast.success("Saved for Later");
+
+        const alreadySaved = saveForLater.some(
+            (item) => item.id === data.id
+        );
+
+        if (alreadySaved) {
+            toast.info("This workout is already saved for later");
+            return;
+        }
+
+        
     
         setSaveForLater([...saveForLater, data]);
+        toast.success("Saved for Later");
     };
+
+    
 
     return (
         <button

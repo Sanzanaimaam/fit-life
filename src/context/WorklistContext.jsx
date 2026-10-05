@@ -2,18 +2,21 @@
 
 import React, { createContext, useState } from 'react';
 
-export const WorkContext=createContext()
+export const WorkContext = createContext()
 
-const WorklistContext = ({children}) => {
+const WorklistContext = ({ children }) => {
 
-    const [addToPlan, setAddToPlan]=useState([])
-    const [saveForLater, setSaveForLater]=useState([])
+    const [addToPlan, setAddToPlan] = useState([])
+    const [saveForLater, setSaveForLater] = useState([])
+    const [doneWorkouts, setDoneWorkouts] = useState([]);
 
-    const shareData={
+    const shareData = {
         addToPlan,
         setAddToPlan,
         saveForLater,
-        setSaveForLater
+        setSaveForLater,
+         doneWorkouts,
+        setDoneWorkouts
     }
     return <WorkContext.Provider value={shareData}>{children}</WorkContext.Provider>
 };
