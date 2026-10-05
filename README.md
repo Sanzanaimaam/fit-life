@@ -15,7 +15,7 @@ Explore workouts, build your daily plan, and save sessions for later, all in one
 ![DaisyUI](https://img.shields.io/badge/DaisyUI-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-[**Live Demo**](#) · [**Report Bug**](#) · [**Request Feature**](#)
+[**Live Demo**](https://fit-life-brown.vercel.app/)
 
 </div>
 
@@ -42,7 +42,7 @@ Explore workouts, build your daily plan, and save sessions for later, all in one
 
 ## Overview
 
-**FITlife** is a responsive fitness web app that helps users discover workouts, view detailed exercise information, organize a daily training plan, and bookmark sessions to revisit later.
+**FITlog** is a responsive fitness web app that helps users discover workouts, view detailed exercise information, organize a daily training plan, and bookmark sessions to revisit later.
 
 This project was built to practice and showcase:
 
